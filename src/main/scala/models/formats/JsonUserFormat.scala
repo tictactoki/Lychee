@@ -21,7 +21,6 @@ sealed trait JsonUserFormat { self: JsonFormat =>
 }
 
 sealed trait JsonTaskFormat { self: JsonFormat =>
-  implicit val taskFormat = jsonFormat3(Task.apply)
 
   implicit object TaskCategoryFormat extends RootJsonFormat[TaskCategory.TaskCategory] {
     override def write(obj: TaskCategory): JsValue = JsString(obj.toString)
@@ -32,39 +31,8 @@ sealed trait JsonTaskFormat { self: JsonFormat =>
     }
   }
 
+  implicit val taskFormat = jsonFormat3(Task.apply)
+
 }
 
-sealed trait JsonJodaTimeFormat { self: JsonFormat =>
-
-  protected val formatter = ISODateTimeFormat.dateOptionalTimeParser()
-
-  implicit object DateTimeFormat extends RootJsonFormat[DateTime] {
-    override def write(obj: DateTime): JsValue = JsString(ISODateTimeFormat.basicDateTime.print(obj))
-
-    override def read(json: JsValue): DateTime = json match {
-      case JsString(value) => Try(formatter.parseDateTime(value)).getOrElse(error(value))
-      case _ => error(json.toString())
-    }
-
-    protected def error(v: Any): DateTime = {
-      deserializationError(
-        s"""
-           |'$v' is not a valid date value. Dates must be in format:
-           |     * date-opt-time     = date-element ['T' [time-element] [offset]]
-           |     * date-element      = std-date-element | ord-date-element | week-date-element
-           |     * std-date-element  = yyyy ['-' MM ['-' dd]]
-           |     * ord-date-element  = yyyy ['-' DDD]
-           |     * week-date-element = xxxx '-W' ww ['-' e]
-           |     * time-element      = HH [minute-element] | [fraction]
-           |     * minute-element    = ':' mm [second-element] | [fraction]
-           |     * second-element    = ':' ss [fraction]
-           |     * offset            = 'Z' | (('+' | '-') HH [':' mm [':' ss [('.' | ',') SSS]]])
-           |     * fraction          = ('.' | ',') digit+
-        """.stripMargin
-      )
-    }
-
-  }
-}
-
-trait JsonFormat extends SprayJsonSupport with DefaultJsonProtocol with JsonUserFormat with JsonTaskFormat with JsonJodaTimeFormat
+trait JsonFormat extends SprayJsonSupport with DefaultJsonProtocol with JsonUserFormat with JsonTaskFormat

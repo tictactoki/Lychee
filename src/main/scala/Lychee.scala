@@ -4,6 +4,7 @@ import akka.http.scaladsl._
 import model._
 import models.formats.JsonFormat
 import models.tasks.{TaskCategory, Task}
+import models.users.User
 import server.Directives._
 
 import scala.io.StdIn
@@ -21,10 +22,6 @@ object Lychee extends App with JsonFormat {
   val route = path("Hello") {
     get {
       complete("Hellor Lychee")
-    }
-  } ~ path("task") {
-    get {
-      complete(Task("test", TaskCategory.Bill))
     }
   }
 
