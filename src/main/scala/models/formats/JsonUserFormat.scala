@@ -1,6 +1,7 @@
 package models.formats
 
 import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport
+import models.tasks.Task
 import models.users.{User, SignUp}
 import akka.http.scaladsl.server.Directives
 import spray.json.DefaultJsonProtocol
@@ -13,6 +14,9 @@ trait JsonUserFormat { self: JsonFormat =>
   implicit val userFormat = jsonFormat4(User.apply)
 }
 
+trait JsonTaskFormat { self: JsonFormat =>
+  implicit val taskFormat = jsonFormat3(Task.apply)
+}
 
 trait JsonFormat extends SprayJsonSupport with DefaultJsonProtocol with JsonUserFormat {
 
