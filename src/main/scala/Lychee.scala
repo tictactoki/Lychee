@@ -2,6 +2,7 @@ import akka.actor.ActorSystem
 import akka.stream.ActorMaterializer
 import akka.http.scaladsl._
 import model._
+import models.db.Connection
 import models.formats.JsonFormat
 import models.tasks.{TaskCategory, Task}
 import models.users.User
@@ -25,11 +26,15 @@ object Lychee extends App with JsonFormat {
     }
   }
 
+  Connection
+
   val binding = Http().bindAndHandle(route, "localhost", 8888)
   println("Server online")
   StdIn.readLine()
   binding.flatMap(_.unbind())
     .onComplete(_ => system.terminate())
+
+
 
 
 }

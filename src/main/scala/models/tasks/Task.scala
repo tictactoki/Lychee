@@ -11,5 +11,5 @@ object TaskCategory extends Enumeration {
   val Bill, Meeting, Counter, Work = Value
 }
 
-case class Task(title: String, category: TaskCategory.Value, description: Option[String] = None)
+case class Task(id: Option[Long], title: String, category: TaskCategory.Value, description: Option[String] = None)
 

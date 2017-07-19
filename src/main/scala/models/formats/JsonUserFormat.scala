@@ -17,7 +17,7 @@ import scala.util.Try
   */
 sealed trait JsonUserFormat { self: JsonFormat =>
   implicit val signUpFormat = jsonFormat3(SignUp.apply)
-  implicit val userFormat = jsonFormat4(User.apply)
+  implicit val userFormat = jsonFormat5(User.apply)
 }
 
 sealed trait JsonTaskFormat { self: JsonFormat =>
@@ -31,7 +31,7 @@ sealed trait JsonTaskFormat { self: JsonFormat =>
     }
   }
 
-  implicit val taskFormat = jsonFormat3(Task.apply)
+  implicit val taskFormat = jsonFormat4(Task.apply)
 
 }
 

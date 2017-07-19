@@ -6,5 +6,5 @@ package models.users
   */
 
 final case class SignUp(name: String, email: String, password: String)
-final case class User(name: String, email: String, password: String, signDate: Long = System.currentTimeMillis())
+final case class User(id: Option[Long], name: String, email: String, password: String, signDate: Long = System.currentTimeMillis())
 
