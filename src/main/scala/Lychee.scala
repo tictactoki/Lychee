@@ -26,7 +26,6 @@ object Lychee extends App with JsonFormat {
     }
   }
 
-  Connection
 
   val binding = Http().bindAndHandle(route, "localhost", 8888)
   println("Server online")
