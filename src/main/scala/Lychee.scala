@@ -22,9 +22,12 @@ object Lychee extends App with JsonFormat {
 
   val route = path("Hello") {
     get {
-      complete("Hellor Lychee")
+      complete("Hello Lychee")
     }
   }
+
+  println(Connection)
+
 
 
   val binding = Http().bindAndHandle(route, "localhost", 8888)

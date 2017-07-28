@@ -1,35 +1,39 @@
 package models.db
 
-import com.sksamuel.elastic4s.http.HttpClient
-import com.sksamuel.elastic4s.{ElasticsearchClientUri, TcpClient}
-import com.sksamuel.elastic4s.ElasticDsl._
-import com.sksamuel.elastic4s.searches.RichSearchResponse
-import org.elasticsearch.action.support.WriteRequest.RefreshPolicy
-import org.elasticsearch.common.settings.Settings
-import com.sksamuel.elastic4s.jackson.ElasticJackson.Implicits._
+import com.orientechnologies.orient.core.db.document.ODatabaseDocumentTx
+import com.orientechnologies.orient.core.metadata.schema.OType
+import com.orientechnologies.orient.core.record.impl.ODocument
+import com.tinkerpop.blueprints.impls.orient.{OrientEdgeType, OrientVertexType, OrientGraphFactory, OrientGraph}
 
 
 // circe
-import com.sksamuel.elastic4s.circe._
-import io.circe.generic.auto._
-
 /**
   * Created by stephane on 18/07/2017.
   */
+
+
 object Connection {
 
+  val uri = "plocal:/Users/stephane/Downloads/orientdb-community-importers-2.2.24/databases/lychee"
+  //val odb: ODatabaseDocumentTx = new ODatabaseDocumentTx("remote:localhost/lychee").open("root","test")
+  val graphFactory = new OrientGraphFactory(uri)
 
-  val uri = ElasticsearchClientUri("localhost", 9200)
-  val client = TcpClient.transport(uri)
+  val graph = graphFactory.getTx
 
-  client.execute {
-    indexInto("bands" / "artists").fields("name" -> "coldplay").refresh(RefreshPolicy.IMMEDIATE)
-  }.await
+  val person: OrientVertexType = graph.createVertexType("PersonGG")
+  person.createProperty("firstName", OType.STRING)
+  person.createProperty("lastName", OType.STRING)
 
-  val resp = client.execute {
-    search("bands" / "artists") query "coldplay"
-  }.await
+  val work: OrientEdgeType = graph.createEdgeType("WorkG")
+  work.createProperty("startDate", OType.DATE)
+  work.createProperty("endDate", OType.DATE)
 
-  println(resp)
+  //val doc = new ODocument("User")
+  //doc.field("name", "test")
+  //doc.field("email","test@test.com")
+
+  //doc.save()
+  //odb.close()
+
 
 }

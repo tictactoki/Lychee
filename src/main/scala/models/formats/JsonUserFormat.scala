@@ -6,8 +6,6 @@ import models.tasks.{TaskCategory, Task}
 import models.tasks.TaskCategory.TaskCategory
 import models.users.{User, SignUp}
 import akka.http.scaladsl.server.Directives
-import org.joda.time.DateTime
-import org.joda.time.format.ISODateTimeFormat
 import spray.json._
 
 import scala.util.Try
